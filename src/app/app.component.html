@@ -15,7 +15,7 @@
     <div class="message__block" *ngIf="messages.length; else nomessages">
       <div class="message__item" *ngFor="let message of messages">
         <p><strong>{{message.name}}</strong></p>
-        <p>{{message.message}}</p>
+        <p>{{message.msg}}</p>
       </div>
     </div>
     <ng-template #nomessages>

@@ -1,0 +1,9 @@
+version: '2'
+services:
+  angular-soketio:
+    image: angular-soketio
+    build:
+      context: .
+    restart: always
+    ports:
+      - 3111:80

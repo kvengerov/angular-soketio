@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       console.log(data);
     });
     this.wsService.listen('new message').subscribe((data: any) => {
-      this.messages.push(data.msg);
+      this.messages.push(data);
     });
 
     this.initialForm();
