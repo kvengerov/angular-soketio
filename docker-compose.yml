@@ -6,4 +6,4 @@ services:
       context: .
     restart: always
     ports:
-      - 3111:80
+      - 8000:80
