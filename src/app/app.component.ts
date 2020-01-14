@@ -1,35 +1,36 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WebsocketService } from './websocket.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SubscriptionLike } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'angular-soketio';
   form: FormGroup;
   messages: Array<{message:String}> = []
+  subscriptions: SubscriptionLike[] = [];
 
   constructor(
     private wsService: WebsocketService,
     private formBuilder: FormBuilder,
   ) {}
 
-  ngAfterViewInit() {
-
-  }
   ngOnInit(): void {
-    this.wsService.listen('test event').subscribe((data) => {
-      console.log(data);
-    });
-    this.wsService.listen('new message').subscribe((data: any) => {
-      this.messages.push(data);
-    });
-
+    this.subscriptions.push(
+      this.wsService.listen('new message').subscribe((data: any) => {
+        this.messages.push(data);
+      })
+    );
     this.initialForm();
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+}
 
   initialForm(): void {
     this.form = this.formBuilder.group({
